@@ -1,0 +1,107 @@
+CREATE SCHEMA imobiliaria;
+use imobiliaria;
+
+
+create table clientes (
+ClienteID int not null auto_increment,
+Nome varchar(100) null,
+CPF varchar(14) null,
+telefone varchar(15),
+email varchar(100),
+PRIMARY KEY (ClienteID));
+
+create table imoveis (
+ImoveisID int not null auto_increment,
+Endereco varchar(100) null,
+Preco decimal(10,2) null,
+Tipo varchar(50),
+Disponibilidade varchar(20),
+ClienteID INT,
+PRIMARY KEY (ImoveisID),
+FOREIGN KEY (ClienteID) references clientes(ClienteID));
+
+create table transacoes (
+TransacaoID int not null auto_increment,
+ImovelID INT,
+ClienteID INT,
+Tipo varchar(20),
+Valor decimal(10,2),
+Comissao decimal(10,2),
+PRIMARY KEY (TransacaoID),
+FOREIGN KEY (ClienteID) references clientes(ClienteID),
+FOREIGN KEY (ImovelID) references imoveis(ImoveisID));
+
+
+INSERT INTO clientes (nome, cpf, telefone, email) 
+values ('João Silva', '123.456.789-09', '(83) 99876-1234', 'joao@email.com'),
+('Maria Souza', '987.654.321-00', '(83) 99123-4567', 'maria@email.com'),
+('Pedro Santos', '456.123.789-10', '(83) 99654-7890', 'pedro@email.com'),
+('Ana Lima', '741.852.963-20', '(83) 99777-1122', 'ana@email.com'),
+('Carlos Mendes', '159.357.258-40', '(83) 98888-2233', 'carlos@email.com'),
+('Juliana Alves', '258.369.147-50', '(83) 99999-3344', 'juliana@email.com'),
+('Lucas Rocha', '369.258.147-60', '(83) 98765-4455', 'lucas@email.com'),
+('Fernanda Costa', '147.258.369-70', '(83) 98654-5566', 'fernanda@email.com'),
+('Rafael Gomes', '852.741.963-80', '(83) 98543-6677', 'rafael@email.com'),
+('Beatriz Martins', '963.852.741-90', '(83) 98432-7788', 'beatriz@email.com');
+
+SELECT * FROM clientes;
+
+
+INSERT INTO imoveis (endereco, preco, tipo, disponibilidade, ClienteID) 
+values ('Rua das Acácias, 145 - Manaíra', 320000.00, 'Apartamento', 'Disponível', NULL),
+('Av. Epitácio Pessoa, 2300 - Tambaú', 550000.00, 'Apartamento', 'Vendido', 1),
+('Rua Bancário Sérgio Guerra, 890 - Bancários', 280000.00, 'Casa', 'Disponível', NULL),
+('Rua João Câncio, 410 - Manaíra', 650000.00, 'Apartamento', 'Vendido', 2),
+('Rua Valdemar Chianca, 720 - Bessa', 380000.00, 'Apartamento', 'Disponível', NULL),
+('Av. Cabo Branco, 1500 - Cabo Branco', 950000.00, 'Apartamento', 'Vendido', 3),
+('Rua Comerciante Alfredo Ferreira, 300 - Mangabeira', 220000.00, 'Casa', 'Disponível', NULL),
+('Rua Deputado José Mariz, 560 - Tambauzinho', 500000.00, 'Apartamento', 'Vendido', 4),
+('Rua Norberto de Castro Nogueira, 120 - Jardim Oceania', 420000.00, 'Apartamento', 'Disponível', NULL),
+('Av. Gov. Flávio Ribeiro Coutinho, 2000 - Bessa', 780000.00, 'Casa', 'Disponível', NULL);
+
+SELECT * FROM imoveis;
+
+
+INSERT INTO transacoes (ImovelID, ClienteID, tipo, valor, comissao) 
+values (2, 1, 'Venda', 450000.00, 22500.00),
+(4, 2, 'Venda', 600000.00, 30000.00),
+(6, 3, 'Venda', 700000.00, 35000.00),
+(8, 4, 'Venda', 500000.00, 25000.00),
+(1, 5, 'Venda', 300000.00, 15000.00),
+(3, 6, 'Aluguel', 2500.00, 250.00),
+(5, 7, 'Aluguel', 3000.00, 300.00),
+(7, 8, 'Aluguel', 2800.00, 280.00),
+(9, 9, 'Aluguel', 3200.00, 320.00),
+(10, 10, 'Venda', 800000.00, 40000.00);
+
+SELECT * FROM transacoes;
+
+
+UPDATE imoveis
+SET Disponibilidade = 'Vendido'
+WHERE ImoveisID = 03;
+
+SELECT * FROM imoveis;
+
+SELECT SUM(valor)
+FROM Transacoes;
+
+SELECT AVG(comissao)
+FROM Transacoes;
+
+SELECT COUNT(*)
+FROM imoveis;
+
+SELECT tipo, AVG(valor)
+FROM transacoes
+GROUP BY tipo;
+
+SELECT tipo, AVG(comissão)
+FROM transações
+GROUP BY tipo;
+
+SELECT c.nome, i.endereco, i.preco
+FROM clientes c
+JOIN imoveis i on c.ClienteID = i.ClienteID;
+
+
